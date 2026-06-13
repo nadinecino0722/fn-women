@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FN Wellness Library — Founders Network</title>
+<style>
+  :root {
+    --purple-light: #EEEDFE;
+    --purple-mid: #7F77DD;
+    --purple-dark: #3C3489;
+    --purple-border: #AFA9EC;
+    --teal-light: #E1F5EE;
+    --teal-mid: #1D9E75;
+    --teal-dark: #085041;
+    --teal-border: #5DCAA5;
+    --amber-light: #FAEEDA;
+    --amber-mid: #BA7517;
+    --amber-dark: #633806;
+    --amber-border: #EF9F27;
+    --coral-light: #FAECE7;
+    --coral-dark: #712B13;
+    --coral-border: #F0997B;
+    --blue-light: #E6F1FB;
+    --blue-dark: #0C447C;
+    --blue-border: #85B7EB;
+    --green-light: #EAF3DE;
+    --green-dark: #3B6D11;
+    --gray-light: #F1EFE8;
+    --gray-dark: #444441;
+    --bg: #ffffff;
+    --bg-secondary: #F8F7F4;
+    --bg-tertiary: #F1EFE8;
+    --text: #1a1a18;
+    --text-secondary: #6b6a65;
+    --text-hint: #9e9d97;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg-secondary: #252523;
+      --bg-tertiary: #2e2e2b;
+      --text: #f0ede8;
+      --text-secondary: #a09e98;
+      --text-hint: #6b6a65;
+      --border: rgba(255,255,255,0.1);
+      --border-strong: rgba(255,255,255,0.18);
+      --purple-light: #2a2860;
+      --purple-dark: #CECBF6;
+      --purple-border: #534AB7;
+      --teal-light: #0a3028;
+      --teal-dark: #9FE1CB;
+      --teal-border: #0F6E56;
+      --amber-light: #3a2808;
+      --amber-dark: #FAC775;
+      --amber-border: #854F0B;
+      --coral-light: #3a1a0e;
+      --coral-dark: #F5C4B3;
+      --coral-border: #993C1D;
+      --blue-light: #0a2240;
+      --blue-dark: #B5D4F4;
+      --blue-border: #185FA5;
+      --green-light: #152808;
+      --green-dark: #C0DD97;
+      --gray-light: #2a2a28;
+      --gray-dark: #D3D1C7;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; min-height: 100vh; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Layout */
+  .page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* Header */
+  .header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--border); }
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-icon { width: 38px; height: 38px; background: var(--purple-light); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+  .brand-icon svg { width: 20px; height: 20px; stroke: var(--purple-dark); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .brand-text h1 { font-size: 17px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .brand-text p { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+  .header-tagline { font-size: 13px; color: var(--text-secondary); max-width: 320px; text-align: right; line-height: 1.5; }
+
+  /* Search */
+  .search-wrap { position: relative; margin-bottom: 1.25rem; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--text-hint); fill: none; stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
+  .search-wrap input { width: 100%; padding: 0 12px 0 38px; height: 40px; border: 0.5px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text); font-size: 14px; font-family: var(--font); outline: none; transition: border-color 0.15s; }
+  .search-wrap input:focus { border-color: var(--purple-mid); }
+  .search-wrap input::placeholder { color: var(--text-hint); }
+
+  /* Filter sections */
+  .filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+  .filter-row { display: flex; align-items: flex-start; gap: 10px; }
+  .filter-label { font-size: 11px; font-weight: 600; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.06em; min-width: 62px; padding-top: 5px; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip { font-size: 12px; padding: 4px 11px; border-radius: 20px; cursor: pointer; border: 0.5px solid var(--border-strong); background: var(--bg); color: var(--text-secondary); transition: all 0.15s; user-select: none; white-space: nowrap; }
+  .chip:hover { background: var(--bg-tertiary); }
+  .chip.on-pillar-destigmatize { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple-border); }
+  .chip.on-pillar-peer { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal-border); }
+  .chip.on-pillar-navigate { background: var(--amber-light); color: var(--amber-dark); border-color: var(--amber-border); }
+  .chip.on-stressor { background: var(--coral-light); color: var(--coral-dark); border-color: var(--coral-border); }
+  .chip.on-stage { background: var(--blue-light); color: var(--blue-dark); border-color: var(--blue-border); }
+  .chip.on-format { background: var(--gray-light); color: var(--gray-dark); border-color: var(--border-strong); }
+  .filter-reset { font-size: 11px; color: var(--text-hint); cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); border: 0.5px solid transparent; transition: all 0.15s; align-self: flex-end; margin-left: auto; }
+  .filter-reset:hover { color: var(--text-secondary); border-color: var(--border); }
+  .filter-reset.visible { display: inline-block; }
+  .filter-reset.hidden { display: none; }
+
+  /* Results bar */
+  .results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .results-count { font-size: 12px; color: var(--text-secondary); }
+
+  /* Resource grid */
+  .r-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .r-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; gap: 6px; }
+  .r-card:hover { border-color: var(--border-strong); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .r-card.selected { border-color: var(--purple-mid); border-width: 1px; }
+  .r-card-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+  .b-pdf { background: var(--coral-light); color: var(--coral-dark); }
+  .b-audio { background: var(--green-light); color: var(--green-dark); }
+  .b-video { background: var(--blue-light); color: var(--blue-dark); }
+  .b-tool { background: var(--amber-light); color: var(--amber-dark); }
+  .b-guide { background: var(--purple-light); color: var(--purple-dark); }
+  .r-stage { font-size: 10px; color: var(--text-hint); }
+  .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.35; }
+  .r-meta { font-size: 11px; color: var(--text-secondary); }
+  .r-arrow { font-size: 11px; color: var(--text-hint); margin-top: auto; padding-top: 4px; }
+
+  /* Detail panel */
+  .detail-panel { background: var(--bg-secondary); border: 0.5px solid var(--border-strong); border-radius: var(--radius-xl); padding: 1.25rem 1.5rem; margin-top: 14px; animation: slideIn 0.18s ease; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 10px; }
+  .detail-title { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .detail-close { font-size: 20px; color: var(--text-hint); cursor: pointer; line-height: 1; flex-shrink: 0; margin-top: -2px; transition: color 0.15s; }
+  .detail-close:hover { color: var(--text); }
+  .detail-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 12px; }
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+  .dtag { font-size: 11px; background: var(--bg); border: 0.5px solid var(--border); color: var(--text-secondary); padding: 3px 10px; border-radius: 20px; }
+  .detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .d-btn { font-size: 12px; padding: 7px 14px; border-radius: var(--radius-md); cursor: pointer; border: 0.5px solid var(--border-strong); background: var(--bg); color: var(--text-secondary); font-family: var(--font); transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px; }
+  .d-btn:hover { background: var(--bg-tertiary); color: var(--text); }
+  .d-btn.primary { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple-border); }
+  .d-btn.primary:hover { background: var(--purple-border); }
+
+  /* Empty state */
+  .empty { padding: 3rem 1rem; text-align: center; color: var(--text-secondary); }
+  .empty-icon { font-size: 32px; margin-bottom: 10px; }
+  .empty h3 { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .empty p { font-size: 13px; }
+
+  /* Footer */
+  .footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 12px; }
+  .footer-text { font-size: 12px; color: var(--text-hint); }
+  .footer-btn { font-size: 12px; padding: 7px 14px; border-radius: var(--radius-md); border: 0.5px solid var(--border-strong); background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+  .footer-btn:hover { background: var(--bg-tertiary); color: var(--text); }
+
+  @media (max-width: 560px) {
+    .filter-row { flex-direction: column; gap: 6px; }
+    .filter-label { min-width: unset; padding-top: 0; }
+    .header-tagline { display: none; }
+    .r-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        </div>
+        <div class="brand-text">
+          <h1>FN Wellness Library</h1>
+          <p>Founders Network · Mental wellness resources</p>
+        </div>
+      </div>
+      <div class="header-tagline">A self-serve library for founders at every stage — find what you need in two clicks.</div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="srch" placeholder="Search by topic, keyword, or stage..." oninput="render()" />
+  </div>
+
+  <div class="filters">
+    <div class="filter-row">
+      <span class="filter-label">Pillar</span>
+      <div class="chip-group" id="pillar-chips">
+        <span class="chip" data-val="destigmatize" onclick="toggle('pillar',this)">Destigmatize</span>
+        <span class="chip" data-val="peer" onclick="toggle('pillar',this)">Peer support</span>
+        <span class="chip" data-val="navigate" onclick="toggle('pillar',this)">Navigate care</span>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Stressor</span>
+      <div class="chip-group" id="stressor-chips">
+        <span class="chip" data-val="loneliness" onclick="toggle('stressor',this)">Loneliness</span>
+        <span class="chip" data-val="burnout" onclick="toggle('stressor',this)">Burnout</span>
+        <span class="chip" data-val="fundraising" onclick="toggle('stressor',this)">Fundraising</span>
+        <span class="chip" data-val="relationships" onclick="toggle('stressor',this)">Relationships</span>
+        <span class="chip" data-val="team-conflict" onclick="toggle('stressor',this)">Team conflict</span>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Stage</span>
+      <div class="chip-group" id="stage-chips">
+        <span class="chip" data-val="early" onclick="toggle('stage',this)">Early / pre-seed</span>
+        <span class="chip" data-val="seed" onclick="toggle('stage',this)">Seed / angel</span>
+        <span class="chip" data-val="series-a" onclick="toggle('stage',this)">Series A</span>
+        <span class="chip" data-val="growth" onclick="toggle('stage',this)">Growth</span>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Format</span>
+      <div class="chip-group" id="format-chips">
+        <span class="chip" data-val="pdf" onclick="toggle('format',this)">PDF</span>
+        <span class="chip" data-val="audio" onclick="toggle('format',this)">Audio</span>
+        <span class="chip" data-val="video" onclick="toggle('format',this)">Video</span>
+        <span class="chip" data-val="tool" onclick="toggle('format',this)">Practice tool</span>
+        <span class="chip" data-val="guide" onclick="toggle('format',this)">Facilitator guide</span>
+      </div>
+    </div>
+    <span class="filter-reset hidden" id="reset-btn" onclick="resetAll()">✕ Clear all filters</span>
+  </div>
+
+  <div class="results-bar">
+    <span class="results-count" id="count-bar">Showing all 15 resources</span>
+  </div>
+
+  <div class="r-grid" id="r-grid"></div>
+  <div id="detail-panel"></div>
+
+  <div class="footer">
+    <span class="footer-text">Founders Network · Living library — updated as the community grows</span>
+    <button class="footer-btn" onclick="window.location.href='mailto:?subject=FN Wellness Library&body=Check out the Founders Network wellness resource library: ' + window.location.href">Share this library</button>
+  </div>
+</div>
+
+<script>
+const allStages = ['early','seed','series-a','growth'];
+const stageLabel = { early:'Early', seed:'Seed', 'series-a':'Series A', growth:'Growth' };
+const formatLabel = { pdf:'PDF', audio:'Audio', video:'Video', tool:'Practice tool', guide:'Facilitator guide' };
+
+const resources = [
+  { id:1, pillar:'destigmatize', format:'pdf', stressors:['loneliness','burnout'], stages:['early','seed','series-a','growth'], title:'The founder mental health gap: what no one tells you', meta:'5 min read · All stages', tags:['stigma','awareness','identity'], desc:'A candid overview of why mental health challenges are endemic in founding — and why silence makes them worse. Designed to open the conversation, not solve it.' },
+  { id:2, pillar:'destigmatize', format:'audio', stressors:['burnout','loneliness'], stages:['early','seed'], title:'You are not your startup: separating identity from outcome', meta:'12 min · Audio', tags:['identity','burnout','early-stage'], desc:'A short guided listen for founders whose sense of self is tightly wound around their company\'s performance.' },
+  { id:3, pillar:'destigmatize', format:'video', stressors:['loneliness','fundraising'], stages:['early','seed','series-a'], title:'Founder stories: speaking honestly about the hard parts', meta:'10 min · Peer testimonials', tags:['stigma','community','vulnerability'], desc:'Real founders talk candidly about depression, anxiety, and burnout — breaking the silence in their own words.' },
+  { id:4, pillar:'destigmatize', format:'pdf', stressors:['team-conflict','burnout'], stages:['series-a','growth'], title:'When growth feels like grief: scaling and mental load', meta:'4 min read · Series A+', tags:['scaling','grief','identity'], desc:'Explores the paradox of hitting milestones that feel hollow — and what that signals about wellness needs.' },
+  { id:5, pillar:'destigmatize', format:'tool', stressors:['burnout','loneliness'], stages:['early','seed','series-a','growth'], title:'Founder wellness self-check', meta:'5 min · Self-assessment', tags:['self-awareness','burnout','check-in'], desc:'A quick, private self-assessment across five wellness dimensions. No scores, no judgments — just a starting point for reflection.' },
+  { id:6, pillar:'peer', format:'guide', stressors:['loneliness'], stages:['early','seed','series-a','growth'], title:'How to start a peer conversation about mental health', meta:'One-pager · Founder-to-founder', tags:['peer-support','conversation','loneliness'], desc:'A founder-to-founder guide — not a facilitation program — for opening honest conversations with other founders. FN provides the frame; founders run it themselves.' },
+  { id:7, pillar:'peer', format:'tool', stressors:['loneliness','burnout'], stages:['early','seed'], title:'Peer check-in prompts: pre-seed & early stage', meta:'Printable · Conversation starters', tags:['early-stage','peer-support','prompts'], desc:'Conversation prompt cards written for pre-seed and early-stage founders — addressing runway anxiety, co-founder tension, and isolation.' },
+  { id:8, pillar:'peer', format:'tool', stressors:['team-conflict','relationships'], stages:['series-a','growth'], title:'Navigating team conflict as a founder: reflection tool', meta:'Worksheet · Series A+', tags:['team-conflict','growth','reflection'], desc:'A structured self-reflection tool for founders dealing with co-founder disputes, leadership team friction, or letting people go.' },
+  { id:9, pillar:'peer', format:'audio', stressors:['relationships'], stages:['early','seed','series-a','growth'], title:'The relationship cost of founding: a guided reflection', meta:'15 min · Audio', tags:['relationships','family','boundaries'], desc:'A grounding audio session helping founders notice the toll their work takes on personal relationships — and identify small, intentional shifts.' },
+  { id:10, pillar:'peer', format:'pdf', stressors:['burnout'], stages:['early','seed','series-a','growth'], title:'Rest is not failure: redefining recovery for founders', meta:'3 min read', tags:['burnout','rest','culture'], desc:'Reframes rest and recovery within the founder context — directly challenging hustle-culture narratives that make burnout feel like dedication.' },
+  { id:11, pillar:'navigate', format:'pdf', stressors:['burnout','loneliness','fundraising','relationships','team-conflict'], stages:['early','seed','series-a','growth'], title:'How to find mental health support: a founder\'s guide', meta:'4 min read · All stages', tags:['therapy','access','navigation'], desc:'Plain-language guidance on finding the right type of support — therapy, coaching, peer groups — without FN endorsing any specific provider.' },
+  { id:12, pillar:'navigate', format:'tool', stressors:['fundraising'], stages:['seed','series-a'], title:'Fundraising emotional survival kit', meta:'Printable · Seed–Series A', tags:['fundraising','resilience','coping'], desc:'A practical self-care and coping worksheet specifically for the fundraising cycle — before, during, and after the raise.' },
+  { id:13, pillar:'navigate', format:'pdf', stressors:['burnout'], stages:['early','seed','series-a','growth'], title:'Is this burnout? How to tell — and what comes next', meta:'3 min read', tags:['burnout','self-awareness','action'], desc:'A decision-support guide helping founders distinguish between normal founder fatigue and clinical burnout, with clear next steps for each.' },
+  { id:14, pillar:'navigate', format:'tool', stressors:['loneliness','burnout','relationships','team-conflict','fundraising'], stages:['early','seed','series-a','growth'], title:'Support mapping worksheet', meta:'Printable · All stages', tags:['support','community','isolation'], desc:'Helps founders visually map their existing support network and identify the gaps — prompting intentional outreach before a crisis hits.' },
+  { id:15, pillar:'navigate', format:'guide', stressors:['loneliness','burnout'], stages:['early','seed','series-a','growth'], title:'FN facilitator guide: supporting founders in distress', meta:'Facilitator · All stages', tags:['facilitator','crisis-adjacent','support'], desc:'For FN staff and facilitators: how to notice signs of significant distress in a founder and respond supportively — without assuming clinical responsibility.' },
+];
+
+const active = { pillar: new Set(), stressor: new Set(), stage: new Set(), format: new Set() };
+let selectedId = null;
+
+function toggle(dim, el) {
+  const val = el.dataset.val;
+  if (active[dim].has(val)) {
+    active[dim].delete(val);
+    el.classList.remove('on-' + dim + (dim === 'pillar' ? '-' + val : ''));
+  } else {
+    active[dim].add(val);
+    el.classList.add('on-' + dim + (dim === 'pillar' ? '-' + val : ''));
+  }
+  selectedId = null;
+  updateResetBtn();
+  render();
+}
+
+function resetAll() {
+  ['pillar','stressor','stage','format'].forEach(dim => {
+    active[dim].clear();
+    document.querySelectorAll('#' + dim + '-chips .chip').forEach(c => {
+      c.className = 'chip';
+    });
+  });
+  document.getElementById('srch').value = '';
+  selectedId = null;
+  updateResetBtn();
+  render();
+}
+
+function updateResetBtn() {
+  const hasAny = ['pillar','stressor','stage','format'].some(d => active[d].size > 0) || document.getElementById('srch').value;
+  const btn = document.getElementById('reset-btn');
+  btn.className = 'filter-reset ' + (hasAny ? 'visible' : 'hidden');
+}
+
+function render() {
+  updateResetBtn();
+  const q = document.getElementById('srch').value.toLowerCase().trim();
+  const filtered = resources.filter(r => {
+    if (active.pillar.size && !active.pillar.has(r.pillar)) return false;
+    if (active.format.size && !active.format.has(r.format)) return false;
+    if (active.stressor.size && !r.stressors.some(s => active.stressor.has(s))) return false;
+    if (active.stage.size && !r.stages.some(s => active.stage.has(s))) return false;
+    if (q && !r.title.toLowerCase().includes(q) && !r.desc.toLowerCase().includes(q) && !r.tags.some(t => t.includes(q)) && !r.stressors.some(s => s.includes(q))) return false;
+    return true;
+  });
+
+  const n = filtered.length;
+  document.getElementById('count-bar').textContent = n + ' resource' + (n !== 1 ? 's' : '') + ' found';
+
+  const grid = document.getElementById('r-grid');
+  if (!n) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">⊘</div><h3>No resources matched</h3><p>Try removing a filter or using a different keyword.</p></div>';
+    document.getElementById('detail-panel').innerHTML = '';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(r => {
+    const stageStr = r.stages.length === allStages.length ? 'All stages' : r.stages.map(s => stageLabel[s]).join(', ');
+    const sel = selectedId === r.id ? ' selected' : '';
+    return `<div class="r-card${sel}" onclick="openDetail(${r.id})" tabindex="0" onkeydown="if(event.key==='Enter')openDetail(${r.id})">
+      <div class="r-card-top">
+        <span class="badge b-${r.format}">${formatLabel[r.format]}</span>
+        <span class="r-stage">${stageStr}</span>
+      </div>
+      <div class="r-title">${r.title}</div>
+      <div class="r-meta">${r.meta}</div>
+      <div class="r-arrow">View details →</div>
+    </div>`;
+  }).join('');
+
+  if (selectedId && filtered.find(r => r.id === selectedId)) {
+    renderDetail(selectedId);
+  } else {
+    document.getElementById('detail-panel').innerHTML = '';
+  }
+}
+
+function openDetail(id) {
+  if (selectedId === id) {
+    selectedId = null;
+    document.getElementById('detail-panel').innerHTML = '';
+    render();
+    return;
+  }
+  selectedId = id;
+  render();
+  renderDetail(id);
+  setTimeout(() => {
+    document.getElementById('detail-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+
+function renderDetail(id) {
+  const r = resources.find(x => x.id === id);
+  if (!r) return;
+  const stageStr = r.stages.length === allStages.length ? 'All stages' : r.stages.map(s => stageLabel[s]).join(', ');
+  document.getElementById('detail-panel').innerHTML = `
+    <div class="detail-panel">
+      <div class="detail-header">
+        <div class="detail-title">${r.title}</div>
+        <span class="detail-close" onclick="openDetail(${r.id})" title="Close">×</span>
+      </div>
+      <div class="detail-desc">${r.desc}</div>
+      <div class="detail-tags">
+        <span class="dtag">📍 ${stageStr}</span>
+        ${r.stressors.map(s => `<span class="dtag">#${s}</span>`).join('')}
+        ${r.tags.map(t => `<span class="dtag">#${t}</span>`).join('')}
+      </div>
+      <div class="detail-actions">
+        <button class="d-btn primary" id="open-btn-RESOURCEID" onclick="openResource(RESOURCEID)">Open resource</button>
+        <button class="d-btn" onclick="navigator.clipboard && navigator.clipboard.writeText(window.location.href + '#r${r.id}').then(() => alert('Link copied!'))">Copy link</button>
+      </div>
+    </div>`;
+}
+
+render();
+
+const resourceUrls = {
+  5: 'fn-resource-1-wellness-selfcheck.html',
+  10: 'fn-resource-2-rest-is-not-failure.html',
+  13: 'fn-resource-3-is-this-burnout.html'
+};
+
+function openResourceUrl(id) {
+  if (resourceUrls[id]) {
+    window.open(resourceUrls[id], '_blank');
+  } else {
+    alert('Full content for this resource is coming soon to the FN Wellness Library.');
+  }
+}
+
+</script>
+</body>
+</html>

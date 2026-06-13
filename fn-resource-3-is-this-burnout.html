@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Is This Burnout? — Founders Network</title>
+<style>
+  :root {
+    --amber: #BA7517; --amber-light: #FAEEDA; --amber-dark: #633806; --amber-border: #EF9F27;
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+    --purple: #534AB7; --purple-light: #EEEDFE; --purple-dark: #3C3489;
+    --red-light: #FCEBEB; --red-dark: #791F1F; --red-border: #F09595;
+    --green-light: #EAF3DE; --green-dark: #27500A; --green-border: #97C459;
+    --text: #1a1a18; --text-2: #5a5a56; --text-3: #9a9994;
+    --bg: #ffffff; --bg-2: #F8F7F4; --bg-3: #F1EFE8;
+    --border: rgba(0,0,0,0.09); --border-2: rgba(0,0,0,0.15);
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --r: 10px; --r-lg: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg-2); color: var(--text); font-size: 15px; line-height: 1.7; }
+  .page { max-width: 660px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  .fn-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .fn-label::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--amber); border-radius: 2px; }
+
+  .hero { margin-bottom: 2rem; }
+  h1 { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero-sub { font-size: 14px; color: var(--text-2); line-height: 1.65; max-width: 520px; }
+  .meta-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .meta-pill { font-size: 11px; background: var(--bg-3); color: var(--text-2); padding: 4px 10px; border-radius: 20px; border: 0.5px solid var(--border-2); }
+
+  /* Checker */
+  .checker-intro { background: var(--amber-light); border-radius: var(--r-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; border: 0.5px solid var(--amber-border); }
+  .checker-intro p { font-size: 13px; color: var(--amber-dark); line-height: 1.65; margin: 0; }
+  .checker-intro strong { font-weight: 600; }
+
+  .checker { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; margin-bottom: 14px; }
+  .checker h2 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .checker-desc { font-size: 13px; color: var(--text-2); margin-bottom: 1rem; line-height: 1.6; }
+
+  .signal-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
+  .signal-item { display: flex; align-items: flex-start; gap: 10px; }
+  .sig-check { width: 20px; height: 20px; border: 0.5px solid var(--border-2); border-radius: 5px; background: var(--bg-2); cursor: pointer; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .sig-check.checked { background: var(--amber); border-color: var(--amber); }
+  .sig-check.checked::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; }
+  .sig-text { font-size: 13px; color: var(--text-2); line-height: 1.55; cursor: pointer; }
+  .sig-text.checked { color: var(--text); }
+
+  .checker-result { border-radius: var(--r); padding: 12px 14px; font-size: 13px; line-height: 1.6; display: none; }
+  .checker-result.visible { display: block; }
+  .checker-result.low { background: var(--green-light); color: var(--green-dark); border: 0.5px solid var(--green-border); }
+  .checker-result.medium { background: var(--amber-light); color: var(--amber-dark); border: 0.5px solid var(--amber-border); }
+  .checker-result.high { background: var(--red-light); color: var(--red-dark); border: 0.5px solid var(--red-border); }
+
+  /* Next steps */
+  .steps-section { margin-top: 1.5rem; }
+  .steps-section h2 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .step-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1.125rem 1.25rem; margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; }
+  .step-icon { width: 34px; height: 34px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .step-icon.green { background: var(--green-light); }
+  .step-icon.amber { background: var(--amber-light); }
+  .step-icon.red { background: var(--red-light); }
+  .step-icon.purple { background: var(--purple-light); }
+  .step-content h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-content p { font-size: 13px; color: var(--text-2); line-height: 1.6; margin: 0; }
+
+  /* Notice */
+  .liability-note { background: var(--bg-3); border-radius: var(--r); padding: 14px 16px; margin-top: 1.25rem; font-size: 12px; color: var(--text-3); line-height: 1.65; border: 0.5px solid var(--border-2); }
+  .liability-note strong { color: var(--text-2); }
+
+  .doc-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer-fn { font-size: 11px; color: var(--text-3); }
+  .print-btn { font-size: 12px; padding: 7px 14px; border-radius: var(--r); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text-2); cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+  .print-btn:hover { background: var(--bg-3); }
+
+  @media print { body { background: white; } .print-btn { display: none; } }
+  @media (max-width: 500px) { h1 { font-size: 22px; } .step-card { flex-direction: column; gap: 8px; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="fn-label">Founders Network · Navigate Care · Wellness Library</div>
+
+  <div class="hero">
+    <h1>Is this burnout?<br>How to tell — and what comes next.</h1>
+    <p class="hero-sub">A decision-support guide for founders who aren't sure if what they're feeling is a hard stretch or something that needs more serious attention.</p>
+    <div class="meta-row">
+      <span class="meta-pill">3 min read</span>
+      <span class="meta-pill">All stages</span>
+      <span class="meta-pill">Burnout · Self-awareness · Action</span>
+    </div>
+  </div>
+
+  <div class="checker-intro">
+    <p><strong>First, a distinction worth making:</strong> Every founder has hard weeks. Pressure, exhaustion, and doubt are part of the job. Burnout is different — it's what happens when those experiences become chronic and start affecting your ability to function. The checklist below is designed to help you tell the difference. Check anything that feels true for you, consistently, over the past month or more.</p>
+  </div>
+
+  <div class="checker">
+    <h2>Emotional &amp; mental signals</h2>
+    <p class="checker-desc">These are signs that your capacity for engagement and resilience has been significantly depleted.</p>
+    <ul class="signal-list" id="group-1">
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I feel emotionally flat or numb — not sad exactly, just switched off.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">Things that used to excite me about the company no longer do.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I'm more cynical or detached than I used to be — about the work, the team, or the mission.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">Small decisions feel disproportionately hard or overwhelming.</span></li>
+    </ul>
+  </div>
+
+  <div class="checker">
+    <h2>Physical &amp; behavioural signals</h2>
+    <p class="checker-desc">Burnout shows up in the body and in patterns of behaviour, not just in how you think and feel.</p>
+    <ul class="signal-list" id="group-2">
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I'm sleeping more than usual but still waking up exhausted — or barely sleeping at all.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I've been getting sick more often, or taking longer to recover when I do.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I'm relying more heavily on alcohol, caffeine, or other crutches to function.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I've been avoiding people — team, investors, friends — more than I normally would.</span></li>
+    </ul>
+  </div>
+
+  <div class="checker">
+    <h2>Performance &amp; work signals</h2>
+    <p class="checker-desc">These signals show up in the quality and character of the work itself.</p>
+    <ul class="signal-list" id="group-3">
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">My judgment feels off — I'm second-guessing decisions I'd normally make with confidence.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I'm less patient with my team than I should be, or catching myself after reactions that aren't like me.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I'm procrastinating significantly more than usual, even on things that matter.</span></li>
+      <li class="signal-item"><span class="sig-check" onclick="toggleSig(this)"></span><span class="sig-text" onclick="toggleSig(this.previousElementSibling)">I'm putting in long hours but feel like I'm producing less than I used to.</span></li>
+    </ul>
+  </div>
+
+  <div class="checker-result" id="checker-result"></div>
+
+  <div class="steps-section">
+    <h2>What comes next — depending on where you are</h2>
+
+    <div class="step-card">
+      <div class="step-icon green">◎</div>
+      <div class="step-content">
+        <h3>You checked 0–3: This looks like a hard stretch, not burnout</h3>
+        <p>Pressure and fatigue are real, but they're not the same as burnout. The most useful thing you can do right now is protect your recovery before depletion compounds. One concrete boundary, one night of real sleep, one conversation with someone who gets it — these are not luxuries. They're maintenance.</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon amber">◎</div>
+      <div class="step-content">
+        <h3>You checked 4–7: You're in the amber zone — pay attention</h3>
+        <p>This isn't full burnout, but the pattern is pointing in that direction. What you do in the next few weeks matters. Identify one or two specific things you can change — a standing commitment you cancel, a weekend you protect, a conversation you've been avoiding. If things don't improve in a month, treat this more seriously.</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon red">◎</div>
+      <div class="step-content">
+        <h3>You checked 8 or more: This deserves serious attention</h3>
+        <p>At this level, self-managed recovery is unlikely to be enough on its own. This is not a judgment — it's a practical observation. Burnout at this intensity typically requires a real structural change (to your workload, your support, or your schedule) and often benefits from talking to someone outside your immediate circle. The Navigate Care section of the FN library can help you think through options — without FN directing you to any specific provider.</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon purple">◎</div>
+      <div class="step-content">
+        <h3>Regardless of your score: tell someone</h3>
+        <p>Not necessarily everything. Not necessarily a professional. But the research on founder mental health is consistent: isolation makes it worse, and being witnessed — even once, by even one person — makes it better. If you don't know who that person is, that's worth noticing too.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="liability-note">
+    <strong>Important:</strong> This guide is a reflection and decision-support tool — it is not a clinical assessment and does not constitute medical or psychological advice. If you are experiencing thoughts of self-harm or are in crisis, please contact a mental health professional or crisis service directly. Founders Network does not endorse or take responsibility for any specific clinical provider.
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-fn">Founders Network · FN Wellness Library · Navigate Care pillar</span>
+    <button class="print-btn" onclick="window.print()">Print / save as PDF</button>
+  </div>
+
+</div>
+<script>
+function toggleSig(el) {
+  el.classList.toggle('checked');
+  const textEl = el.nextElementSibling || el.previousElementSibling;
+  if (textEl && textEl.classList.contains('sig-text')) textEl.classList.toggle('checked', el.classList.contains('checked'));
+  updateResult();
+}
+
+function updateResult() {
+  const total = document.querySelectorAll('.sig-check.checked').length;
+  const el = document.getElementById('checker-result');
+  if (total === 0) { el.className = 'checker-result'; return; }
+  let cls, msg;
+  if (total <= 3) {
+    cls = 'low';
+    msg = `<strong>You've checked ${total} of 12.</strong> This looks more like a hard stretch than burnout. Real, and worth attending to — but probably manageable with some intentional recovery. Scroll to the next steps below.`;
+  } else if (total <= 7) {
+    cls = 'medium';
+    msg = `<strong>You've checked ${total} of 12.</strong> You're in the amber zone. Not full burnout, but the pattern is moving in that direction. Don't wait for it to get worse before taking it seriously. The next steps below are for you.`;
+  } else {
+    cls = 'high';
+    msg = `<strong>You've checked ${total} of 12.</strong> At this level, this deserves serious and prompt attention. Self-managed recovery alone is unlikely to be sufficient. Please read the next steps below — particularly the guidance for 8 or more.`;
+  }
+  el.className = 'checker-result visible ' + cls;
+  el.innerHTML = msg;
+}
+</script>
+</body>
+</html>

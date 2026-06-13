@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rest Is Not Failure — Founders Network</title>
+<style>
+  :root {
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041; --teal-border: #5DCAA5;
+    --purple: #534AB7; --purple-light: #EEEDFE; --purple-dark: #3C3489;
+    --text: #1a1a18; --text-2: #5a5a56; --text-3: #9a9994;
+    --bg: #ffffff; --bg-2: #F8F7F4; --bg-3: #F1EFE8;
+    --border: rgba(0,0,0,0.09); --border-2: rgba(0,0,0,0.15);
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --r: 10px; --r-lg: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg-2); color: var(--text); font-size: 15px; line-height: 1.7; }
+  .page { max-width: 640px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  .fn-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .fn-label::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--teal); border-radius: 2px; }
+
+  .hero { background: var(--teal-light); border-radius: var(--r-lg); padding: 2rem; margin-bottom: 2rem; border: 0.5px solid var(--teal-border); }
+  .hero h1 { font-size: 28px; font-weight: 800; color: var(--teal-dark); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .hero-sub { font-size: 14px; color: var(--teal-dark); opacity: 0.8; line-height: 1.6; }
+  .meta-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .meta-pill { font-size: 11px; background: rgba(255,255,255,0.6); color: var(--teal-dark); padding: 4px 10px; border-radius: 20px; border: 0.5px solid var(--teal-border); }
+
+  .body-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1.75rem 2rem; margin-bottom: 14px; }
+  h2 { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-bottom: 10px; }
+  p { font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); font-weight: 600; }
+  p em { color: var(--text); font-style: italic; }
+
+  .pull-quote { border-left: 3px solid var(--teal); padding: 10px 0 10px 18px; margin: 1.25rem 0; }
+  .pull-quote p { font-size: 16px; font-weight: 500; color: var(--text); font-style: italic; line-height: 1.5; margin: 0; }
+
+  .myth-block { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 0.5px solid var(--border); }
+  .myth-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .myth-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #A32D2D; background: #FCEBEB; padding: 3px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
+  .truth-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-dark); background: var(--teal-light); padding: 3px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; margin-left: 6px; }
+  .myth-text { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+  .practice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .practice-item { background: var(--bg-2); border-radius: var(--r); padding: 14px; border: 0.5px solid var(--border); }
+  .practice-num { font-size: 20px; font-weight: 800; color: var(--teal); margin-bottom: 4px; }
+  .practice-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .practice-desc { font-size: 12px; color: var(--text-2); line-height: 1.55; }
+
+  .closing-card { background: var(--purple-light); border-radius: var(--r-lg); padding: 1.5rem; border: 0.5px solid #AFA9EC; }
+  .closing-card h2 { color: var(--purple-dark); }
+  .closing-card p { color: var(--purple-dark); opacity: 0.85; }
+
+  .doc-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer-fn { font-size: 11px; color: var(--text-3); }
+  .footer-note { font-size: 11px; color: var(--text-3); font-style: italic; }
+  .print-btn { font-size: 12px; padding: 7px 14px; border-radius: var(--r); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text-2); cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+  .print-btn:hover { background: var(--bg-3); }
+
+  @media print {
+    body { background: white; }
+    .print-btn { display: none; }
+    .page { padding: 1rem; }
+  }
+  @media (max-width: 500px) {
+    .hero h1 { font-size: 24px; }
+    .practice-grid { grid-template-columns: 1fr; }
+    .body-card { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="fn-label">Founders Network · Peer Support · Wellness Library</div>
+
+  <div class="hero">
+    <h1>Rest is not failure.</h1>
+    <p class="hero-sub">Redefining recovery in a culture that mistakes exhaustion for ambition.</p>
+    <div class="meta-row">
+      <span class="meta-pill">3 min read</span>
+      <span class="meta-pill">All stages</span>
+      <span class="meta-pill">Burnout · Culture</span>
+    </div>
+  </div>
+
+  <div class="body-card">
+    <h2>The story founders are told</h2>
+    <p>There is a story that runs through startup culture like a current. It goes something like this: <strong>the founders who make it are the ones who outwork everyone else.</strong> Who sacrifice sleep. Who skip the holiday. Who answer Slack at midnight not because they have to, but because that's what real commitment looks like.</p>
+    <p>This story is told by investors at conferences, reinforced by the profiles of famous founders, and repeated — often unconsciously — in every "how I built this" narrative that leaves out the therapy, the broken relationships, and the months where getting out of bed felt like an achievement.</p>
+    <div class="pull-quote">
+      <p>"The founders who celebrate their exhaustion are not a model to follow. They are a warning."</p>
+    </div>
+    <p>The problem isn't that hard work is wrong. Hard work is real and often necessary. The problem is that hustle culture has made it nearly impossible for founders to tell the difference between <em>productive intensity</em> and <em>unsustainable depletion</em> — and has made rest feel like the enemy of both.</p>
+  </div>
+
+  <div class="body-card">
+    <h2>Three myths worth dismantling</h2>
+
+    <div class="myth-block">
+      <span class="myth-label">Myth</span><span class="truth-label">Reality</span>
+      <p class="myth-text"><strong>"If I rest, I'll fall behind."</strong> — Chronic sleep deprivation impairs decision-making at the same rate as being drunk. The founder who hasn't slept is not making better decisions than the one who went to bed. They're making worse ones, faster.</p>
+    </div>
+
+    <div class="myth-block">
+      <span class="myth-label">Myth</span><span class="truth-label">Reality</span>
+      <p class="myth-text"><strong>"Rest is something I'll earn later."</strong> — Later never comes. The company always needs something. There will always be a reason to delay recovery. Founders who treat rest as a future reward find that the future keeps receding.</p>
+    </div>
+
+    <div class="myth-block">
+      <span class="myth-label">Myth</span><span class="truth-label">Reality</span>
+      <p class="myth-text"><strong>"Needing rest means I'm not cut out for this."</strong> — Needing rest means you're human. The founders who appear not to need it are either unusually fortunate in their constitution, not being honest about their state, or heading toward a wall they haven't hit yet.</p>
+    </div>
+  </div>
+
+  <div class="body-card">
+    <h2>What recovery actually looks like for founders</h2>
+    <p>Recovery doesn't have to mean a two-week holiday (though that's not a bad idea). For most founders, it starts smaller — and that's fine. The goal is to interrupt the depletion cycle before it becomes a crisis.</p>
+    <div class="practice-grid">
+      <div class="practice-item">
+        <div class="practice-num">01</div>
+        <div class="practice-title">Protect one off-switch</div>
+        <div class="practice-desc">One hour a day, one morning a week — where the company doesn't exist. Non-negotiable. Start small and defend it.</div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">02</div>
+        <div class="practice-title">Name your depletion signals</div>
+        <div class="practice-desc">What does it look like when you're running on empty? Irritability? Shallow thinking? Know your signals before they escalate.</div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">03</div>
+        <div class="practice-title">Normalise it with your team</div>
+        <div class="practice-desc">Founders set the culture. If you model rest as acceptable, your team is more likely to take it — which means they'll perform better too.</div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">04</div>
+        <div class="practice-title">Reframe the ROI</div>
+        <div class="practice-desc">Recovery isn't time off from your work. It is the work. A founder who is well-rested makes better calls, leads more clearly, and lasts longer.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing-card">
+    <h2>The reframe</h2>
+    <p>Rest is not a reward for finishing. It is a prerequisite for continuing. The founders who sustain themselves over years — through multiple rounds, through pivots, through the genuinely hard chapters — are almost never the ones who burned brightest and fastest. They're the ones who learned, often the hard way, that taking care of themselves was part of the job.</p>
+    <p style="margin-top:10px;">You don't have to earn rest. You just have to let yourself have it.</p>
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-fn">Founders Network · FN Wellness Library · Peer Support pillar</span>
+    <button class="print-btn" onclick="window.print()">Print / save as PDF</button>
+  </div>
+
+</div>
+</body>
+</html>
