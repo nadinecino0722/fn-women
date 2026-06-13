@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Founder Wellness Self-Check — Founders Network</title>
+<style>
+  :root {
+    --purple: #534AB7; --purple-light: #EEEDFE; --purple-dark: #3C3489; --purple-border: #AFA9EC;
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+    --amber: #BA7517; --amber-light: #FAEEDA; --amber-dark: #633806;
+    --coral: #D85A30; --coral-light: #FAECE7; --coral-dark: #712B13;
+    --red-light: #FCEBEB; --red-dark: #791F1F;
+    --text: #1a1a18; --text-2: #5a5a56; --text-3: #9a9994;
+    --bg: #ffffff; --bg-2: #F8F7F4; --bg-3: #F1EFE8;
+    --border: rgba(0,0,0,0.09); --border-2: rgba(0,0,0,0.15);
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --r: 10px; --r-lg: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg-2); color: var(--text); font-size: 15px; line-height: 1.6; }
+  .page { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  /* Header */
+  .doc-header { margin-bottom: 2.5rem; }
+  .fn-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .fn-label::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--purple); border-radius: 2px; }
+  h1 { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .doc-intro { font-size: 14px; color: var(--text-2); line-height: 1.7; max-width: 540px; }
+  .doc-intro strong { color: var(--text); font-weight: 600; }
+  .meta-row { display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
+  .meta-pill { font-size: 11px; background: var(--bg-3); color: var(--text-2); padding: 4px 10px; border-radius: 20px; border: 0.5px solid var(--border-2); }
+
+  /* Progress */
+  .progress-bar-wrap { background: var(--bg-3); border-radius: 4px; height: 4px; margin-bottom: 2rem; overflow: hidden; }
+  .progress-bar { background: var(--purple); height: 4px; border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+  .progress-label { font-size: 12px; color: var(--text-3); margin-bottom: 6px; }
+
+  /* Dimension cards */
+  .dim-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1.25rem 1.5rem; margin-bottom: 12px; transition: border-color 0.2s; }
+  .dim-card.answered { border-color: var(--purple-border); }
+  .dim-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .dim-num { width: 28px; height: 28px; border-radius: 50%; background: var(--purple-light); color: var(--purple-dark); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .dim-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .dim-q { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+  .scale { display: flex; gap: 6px; flex-wrap: wrap; }
+  .scale-btn { flex: 1; min-width: 44px; padding: 9px 4px; border: 0.5px solid var(--border-2); border-radius: var(--r); background: var(--bg-2); color: var(--text-2); font-size: 13px; font-family: var(--font); cursor: pointer; transition: all 0.15s; text-align: center; }
+  .scale-btn:hover { background: var(--purple-light); border-color: var(--purple-border); color: var(--purple-dark); }
+  .scale-btn.selected { background: var(--purple); border-color: var(--purple); color: #fff; font-weight: 600; }
+  .scale-labels { display: flex; justify-content: space-between; margin-top: 5px; }
+  .scale-labels span { font-size: 10px; color: var(--text-3); }
+
+  /* Results */
+  .results-section { display: none; }
+  .results-section.visible { display: block; }
+  .results-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; margin-bottom: 12px; }
+  .results-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .results-sub { font-size: 13px; color: var(--text-2); line-height: 1.6; margin-bottom: 1.25rem; }
+  .dim-result { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+  .dim-result:last-child { border-bottom: none; }
+  .dr-name { font-size: 13px; font-weight: 500; color: var(--text); min-width: 130px; }
+  .dr-bar-wrap { flex: 1; height: 6px; background: var(--bg-3); border-radius: 4px; overflow: hidden; }
+  .dr-bar { height: 6px; border-radius: 4px; transition: width 0.6s ease; }
+  .dr-score { font-size: 12px; color: var(--text-2); min-width: 30px; text-align: right; }
+  .insight-block { background: var(--bg-2); border-radius: var(--r); padding: 14px 16px; margin-top: 1rem; }
+  .insight-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); margin-bottom: 6px; }
+  .insight-text { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+  .notice { background: var(--purple-light); border-radius: var(--r); padding: 14px 16px; margin-top: 12px; font-size: 13px; color: var(--purple-dark); line-height: 1.6; }
+  .notice strong { font-weight: 600; }
+  .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.25rem; }
+  .btn { padding: 9px 18px; border-radius: var(--r); font-size: 13px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-2); background: var(--bg-2); color: var(--text-2); transition: all 0.15s; }
+  .btn:hover { background: var(--bg-3); color: var(--text); }
+  .btn-primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .btn-primary:hover { background: var(--purple-dark); border-color: var(--purple-dark); }
+
+  /* Footer */
+  .doc-footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer-fn { font-size: 11px; color: var(--text-3); }
+  .footer-note { font-size: 11px; color: var(--text-3); font-style: italic; }
+
+  @media print {
+    body { background: white; }
+    .action-row, .btn { display: none; }
+  }
+  @media (max-width: 500px) {
+    h1 { font-size: 22px; }
+    .scale-btn { padding: 8px 2px; font-size: 12px; }
+    .dr-name { min-width: 100px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="fn-label">Founders Network · Wellness Library</div>
+    <h1>Founder wellness self-check</h1>
+    <p class="doc-intro">Five dimensions. No scores that judge you. No results shared with anyone. This is a <strong>private starting point</strong> — a way to see where you are right now, so you can decide what, if anything, you want to do about it.</p>
+    <div class="meta-row">
+      <span class="meta-pill">5 min</span>
+      <span class="meta-pill">All stages</span>
+      <span class="meta-pill">Self-serve · Private</span>
+      <span class="meta-pill">Practice tool</span>
+    </div>
+  </div>
+
+  <div class="progress-label" id="prog-label">0 of 5 completed</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar"></div></div>
+
+  <div id="questions-section">
+
+    <div class="dim-card" id="card-0">
+      <div class="dim-header">
+        <div class="dim-num">1</div>
+        <div>
+          <div class="dim-title">Energy &amp; capacity</div>
+          <div class="dim-q">Over the past two weeks, how would you describe your day-to-day energy? Not just physical — mental and emotional capacity too.</div>
+        </div>
+      </div>
+      <div class="scale" id="scale-0">
+        <button class="scale-btn" data-val="1" onclick="select(0,1)">1</button>
+        <button class="scale-btn" data-val="2" onclick="select(0,2)">2</button>
+        <button class="scale-btn" data-val="3" onclick="select(0,3)">3</button>
+        <button class="scale-btn" data-val="4" onclick="select(0,4)">4</button>
+        <button class="scale-btn" data-val="5" onclick="select(0,5)">5</button>
+      </div>
+      <div class="scale-labels"><span>Completely depleted</span><span>Consistently energised</span></div>
+    </div>
+
+    <div class="dim-card" id="card-1">
+      <div class="dim-header">
+        <div class="dim-num">2</div>
+        <div>
+          <div class="dim-title">Connection &amp; belonging</div>
+          <div class="dim-q">How connected do you feel to people who genuinely understand what you're going through as a founder? Not just supporters — people who <em>get it</em>.</div>
+        </div>
+      </div>
+      <div class="scale" id="scale-1">
+        <button class="scale-btn" data-val="1" onclick="select(1,1)">1</button>
+        <button class="scale-btn" data-val="2" onclick="select(1,2)">2</button>
+        <button class="scale-btn" data-val="3" onclick="select(1,3)">3</button>
+        <button class="scale-btn" data-val="4" onclick="select(1,4)">4</button>
+        <button class="scale-btn" data-val="5" onclick="select(1,5)">5</button>
+      </div>
+      <div class="scale-labels"><span>Deeply isolated</span><span>Strongly connected</span></div>
+    </div>
+
+    <div class="dim-card" id="card-2">
+      <div class="dim-header">
+        <div class="dim-num">3</div>
+        <div>
+          <div class="dim-title">Identity &amp; self-worth</div>
+          <div class="dim-q">When things aren't going well with the company, how much does that affect how you feel about yourself as a person?</div>
+        </div>
+      </div>
+      <div class="scale" id="scale-2">
+        <button class="scale-btn" data-val="1" onclick="select(2,1)">1</button>
+        <button class="scale-btn" data-val="2" onclick="select(2,2)">2</button>
+        <button class="scale-btn" data-val="3" onclick="select(2,3)">3</button>
+        <button class="scale-btn" data-val="4" onclick="select(2,4)">4</button>
+        <button class="scale-btn" data-val="5" onclick="select(2,5)">5</button>
+      </div>
+      <div class="scale-labels"><span>Company = me entirely</span><span>I stay separate from it</span></div>
+    </div>
+
+    <div class="dim-card" id="card-3">
+      <div class="dim-header">
+        <div class="dim-num">4</div>
+        <div>
+          <div class="dim-title">Relationships outside work</div>
+          <div class="dim-q">How would you rate the quality and attention you're giving to relationships outside your company — partners, family, close friends?</div>
+        </div>
+      </div>
+      <div class="scale" id="scale-3">
+        <button class="scale-btn" data-val="1" onclick="select(3,1)">1</button>
+        <button class="scale-btn" data-val="2" onclick="select(3,2)">2</button>
+        <button class="scale-btn" data-val="3" onclick="select(3,3)">3</button>
+        <button class="scale-btn" data-val="4" onclick="select(3,4)">4</button>
+        <button class="scale-btn" data-val="5" onclick="select(3,5)">5</button>
+      </div>
+      <div class="scale-labels"><span>Severely neglected</span><span>Healthy &amp; tended to</span></div>
+    </div>
+
+    <div class="dim-card" id="card-4">
+      <div class="dim-header">
+        <div class="dim-num">5</div>
+        <div>
+          <div class="dim-title">Help-seeking comfort</div>
+          <div class="dim-q">If you were struggling seriously — not just a hard week, but genuinely not coping — how comfortable would you be reaching out for support?</div>
+        </div>
+      </div>
+      <div class="scale" id="scale-4">
+        <button class="scale-btn" data-val="1" onclick="select(4,1)">1</button>
+        <button class="scale-btn" data-val="2" onclick="select(4,2)">2</button>
+        <button class="scale-btn" data-val="3" onclick="select(4,3)">3</button>
+        <button class="scale-btn" data-val="4" onclick="select(4,4)">4</button>
+        <button class="scale-btn" data-val="5" onclick="select(4,5)">5</button>
+      </div>
+      <div class="scale-labels"><span>I wouldn't tell anyone</span><span>I'd ask for help easily</span></div>
+    </div>
+
+  </div>
+
+  <div class="results-section" id="results-section">
+    <div class="results-card">
+      <div class="results-title" id="results-title">Your snapshot</div>
+      <div class="results-sub" id="results-sub"></div>
+      <div id="dim-bars"></div>
+      <div class="insight-block">
+        <div class="insight-label">What this means</div>
+        <div class="insight-text" id="insight-text"></div>
+      </div>
+      <div class="notice">
+        <strong>A note on this tool:</strong> This is a reflection prompt, not a clinical assessment. It has no diagnostic value and is not a substitute for professional support. If any of your responses concern you, that's worth paying attention to — the Navigate Care section of the FN library has plain-language guidance on finding support.
+      </div>
+      <div class="action-row">
+        <button class="btn btn-primary" onclick="resetCheck()">Start again</button>
+        <button class="btn" onclick="window.print()">Print my snapshot</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span class="footer-fn">Founders Network · FN Wellness Library</span>
+    <span class="footer-note">Your responses are not stored or shared.</span>
+  </div>
+
+</div>
+<script>
+const dims = ['Energy & capacity','Connection & belonging','Identity & self-worth','Relationships outside work','Help-seeking comfort'];
+const scores = [null, null, null, null, null];
+const barColors = ['#7F77DD','#1D9E75','#D85A30','#BA7517','#534AB7'];
+
+function select(dim, val) {
+  scores[dim] = val;
+  const btns = document.querySelectorAll('#scale-' + dim + ' .scale-btn');
+  btns.forEach(b => { b.classList.toggle('selected', parseInt(b.dataset.val) === val); });
+  document.getElementById('card-' + dim).classList.add('answered');
+  updateProgress();
+  if (scores.every(s => s !== null)) showResults();
+}
+
+function updateProgress() {
+  const done = scores.filter(s => s !== null).length;
+  document.getElementById('prog-bar').style.width = (done / 5 * 100) + '%';
+  document.getElementById('prog-label').textContent = done + ' of 5 completed';
+}
+
+function showResults() {
+  document.getElementById('results-section').classList.add('visible');
+  const total = scores.reduce((a,b) => a+b, 0);
+  const avg = total / 5;
+
+  let title, sub;
+  if (avg >= 4) {
+    title = 'You seem to be in a relatively strong place right now.';
+    sub = 'That\'s worth acknowledging — founding is hard, and sustaining wellness across all five dimensions takes real effort. Keep an eye on any dimension where you scored lower, and notice if the pattern shifts over time.';
+  } else if (avg >= 3) {
+    title = 'There are areas of strength here, and areas worth watching.';
+    sub = 'Most founders sit somewhere in this range — functioning, but carrying more than they show. The dimensions where you scored lower are worth giving some attention, even if they\'re not urgent yet.';
+  } else if (avg >= 2) {
+    title = 'Several dimensions are signalling that things are heavier than they should be.';
+    sub = 'This doesn\'t mean something is wrong with you — it means you\'re carrying a lot, and doing it mostly alone. That\'s worth taking seriously. Even one small shift — a conversation, a resource, a boundary — can change the pattern.';
+  } else {
+    title = 'Right now, things seem genuinely difficult across the board.';
+    sub = 'That takes honesty to acknowledge, and it matters that you did. You don\'t need to solve everything at once. Start with one dimension. The FN library has resources that meet you where you are.';
+  }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-sub').textContent = sub;
+
+  const lowest = scores.indexOf(Math.min(...scores));
+  const insights = [
+    'Energy depletion is one of the earliest and most overlooked signals of burnout. If your tank is this low, rest isn\'t optional — it\'s strategic.',
+    'Founder loneliness is extremely common and rarely talked about. Even one peer who truly understands your situation can change your baseline significantly.',
+    'When your identity and your company merge completely, every setback becomes a personal failure. Separating the two is one of the most protective things a founder can do.',
+    'Relationships outside work act as a buffer against founder stress. They also tend to be the first thing that gets deprioritised — and the hardest to rebuild once damaged.',
+    'The inability to ask for help is one of the most significant risk factors for founder mental health crises. Comfort with help-seeking can be practised — it doesn\'t have to be innate.'
+  ];
+  document.getElementById('insight-text').textContent = 'Your lowest score was in "' + dims[lowest] + '." ' + insights[lowest];
+
+  const barsHtml = dims.map((d, i) => `
+    <div class="dim-result">
+      <div class="dr-name">${d}</div>
+      <div class="dr-bar-wrap"><div class="dr-bar" id="bar-${i}" style="width:0%; background:${barColors[i]}"></div></div>
+      <div class="dr-score">${scores[i]}/5</div>
+    </div>`).join('');
+  document.getElementById('dim-bars').innerHTML = barsHtml;
+
+  setTimeout(() => {
+    dims.forEach((_, i) => {
+      document.getElementById('bar-' + i).style.width = (scores[i] / 5 * 100) + '%';
+    });
+  }, 100);
+
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetCheck() {
+  scores.fill(null);
+  dims.forEach((_, i) => {
+    document.querySelectorAll('#scale-' + i + ' .scale-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('card-' + i).classList.remove('answered');
+  });
+  updateProgress();
+  document.getElementById('results-section').classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
